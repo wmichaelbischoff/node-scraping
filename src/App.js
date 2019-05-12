@@ -1,26 +1,51 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import axios from 'axios'
 
-function App() {
+class App extends Component{
+  constructor(){
+    super()
+    this.state = {
+      imdbUrl: '',
+      title: '',
+      rating: '',
+      poster: '',
+    }
+  }
+  componentDidMount(){
+    
+  }
+  sendUrl(){
+    var url = {
+    
+    url: this.state.imdbUrl
+    }
+    axios.put('/scrape', url).then(res => {
+      this.setState({
+        title: res.data.title,
+        rating: res.data.rating,
+        poster: res.data.poster
+
+      })
+    })
+  }
+  handleUrl(val){
+    this.setState({
+      imdbUrl: val
+    })
+  }
+  render(){
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Input imdb url</h1>
+      <input value={this.state.imgUrl} placeholder='url' onChange={(e) => this.handleUrl(e.target.value)}></input>
+      <button onClick={() => {this.sendUrl()}}>Send</button>
+      <h1>{this.state.title}</h1>
+      <h3>{this.state.rating}</h3>
+      <img src={this.state.poster} alt='sry'/>
     </div>
   );
+}
 }
 
 export default App;
